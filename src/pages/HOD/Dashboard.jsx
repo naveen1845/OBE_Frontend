@@ -33,7 +33,7 @@ const IconChart = () => (
 );
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, loading: authLoading} = useAuth();
   
   const [stats, setStats] = useState({
     totalCourses: 0,
@@ -47,6 +47,10 @@ export default function Dashboard() {
 
   // Fetch Dashboard Stats
   useEffect(() => {
+
+    if(!user || authLoading){
+      return;
+    }
     const fetchStats = async () => {
       try {
         const res = await hodAPI.getDashboardStats(user?.token);
@@ -65,7 +69,7 @@ export default function Dashboard() {
     };
 
     fetchStats();
-  }, []);
+  }, [user, authLoading]);
 
   const cards = [
     { title: "Programmes", value: stats.programmeCount, icon: <IconClipboard />, color: "text-orange-600" },
