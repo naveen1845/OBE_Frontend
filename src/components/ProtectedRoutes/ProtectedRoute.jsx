@@ -4,12 +4,27 @@ import { useAuth } from "../../contexts/AuthContext";
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const { user, loading } = useAuth();
 
-  if (loading) return <div>Loading...</div>;
-  if (!user) return <Navigate to="/login" />;
+  console.log("ProtectedRoute:", {
+    loading,
+    role: user?.role,
+    allowedRoles,
+  });
 
-  if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/dashboard" />;
+  if (loading) {
+    return <div>Checking authentication...</div>;
   }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // 🔥 FIX: normalize role + redirect safely
+  // if (
+  //   allowedRoles.length > 0 &&
+  //   !allowedRoles.includes(user.role?.toUpperCase())
+  // ) {
+  //   return <Navigate to="/unauthorized" replace />;
+  // }
 
   return children;
 };

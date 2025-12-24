@@ -106,7 +106,7 @@ const Login = () => {
           </p>
 
           <p className="text-sm text-gray-700">
-            <strong>HOD:</strong> hod.cse@obe.edu / hod123
+            <strong>HOD:</strong> hod@college.edu / hod123
           </p>
 
           <p className="text-sm text-gray-700">

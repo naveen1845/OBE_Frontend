@@ -5,52 +5,57 @@ import ProtectedRoute from "../components/ProtectedRoutes/ProtectedRoute";
 import Layout from "../components/Layout";
 import Dashboard from "../pages/HOD/Dashboard";
 
+import CourseManagement from "../pages/HOD/CourseManagement";
+import CLOList from "../pages/HOD/CLOSetup/CLOList";
+import CLOCount from "../pages/HOD/CLOSetup/CLOCount";
+import CLOForm from "../pages/HOD/CLOSetup/CLOForm";
+
 export const AppRoutes = () => {
-    return (
-      <Routes>
-        <Route path="/login" element={<Login />} />
+  console.log("✅ Routes loaded");
+  return (
+    <Routes>
+      {/* PUBLIC ROUTES */}
+      <Route path="/login" element={<Login />} />
 
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
+      {/*test routes*/}
+      <Route path="/test" element={<h1>TEST ROUTE</h1>} />
+
+      {/* PROTECTED HOD ROUTES */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute allowedRoles={["HOD"]}>
+            <Layout />
           </ProtectedRoute>
-        } />
+        }
+      >
+        <Route index element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
 
-        {/* <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
-          </ProtectedRoute>
-        } />
+        {/* COURSE MANAGEMENT MAIN PAGE */}
+        <Route path="hod/courses" element={<CourseManagement />} />
 
-        <Route path="/courses" element={
-          <ProtectedRoute allowedRoles={['HOD', 'ADMIN']}>
-            <Layout>
-              <CourseManagement />
-            </Layout>
-          </ProtectedRoute>
-        } />
+        {/* CLO WORKFLOW */}
+        <Route path="hod/courses/:courseId/clos" element={<CLOList />} />
+        <Route path="hod/courses/:courseId/clo-count" element={<CLOCount />} />
+        <Route
+          path="hod/courses/:courseId/create-clos/:count"
+          element={<CLOForm />}
+        />
+      </Route>
 
-        <Route path="/clos" element={
-          <ProtectedRoute allowedRoles={['HOD', 'FACULTY']}>
-            <Layout>
-              <CLOManagement />
-            </Layout>
-          </ProtectedRoute>
-        } />
+      <Route
+        path="/unauthorized"
+        element={
+          <div className="text-center mt-20 text-red-600 text-xl">
+            You are not authorized to access this page.
+          </div>
+        }
+      />
 
-        <Route path="/pos" element={
-          <ProtectedRoute allowedRoles={['HOD', 'ADMIN']}>
-            <Layout>
-              <POManagement />
-            </Layout>
-          </ProtectedRoute>
-        } /> */}
-
-        <Route path='*' element={<NotFound />}/>
-      </Routes>
-    );
+      {/* 404 PAGE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
 };
+export default AppRoutes;

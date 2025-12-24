@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import {
   FiMenu,
@@ -13,22 +14,72 @@ import {
   FiClipboard,
   FiCheckCircle,
   FiFileText,
-  FiBarChart2
+  FiBarChart2,
 } from "react-icons/fi";
 
 const drawerWidth = 240;
 
 const menuItems = [
-  { text: "Dashboard", icon: <FiGrid />, path: "/dashboard", roles: ["HOD", "FACULTY", "ADMIN"] },
-  { text: "Course Management", icon: <FiBook />, path: "/courses", roles: ["HOD", "ADMIN"] },
-  { text: "CLO Management", icon: <FiList />, path: "/clos", roles: ["HOD", "FACULTY"] },
-  { text: "PO/PSO Management", icon: <FiClipboard />, path: "/pos", roles: ["HOD", "ADMIN"] },
-  { text: "Mapping Matrix", icon: <FiMap />, path: "/mapping", roles: ["HOD", "FACULTY"] },
-  { text: "Faculty Assignment", icon: <FiClipboard />, path: "/faculty-assignment", roles: ["HOD"] },
-  { text: "Attainment Review", icon: <FiCheckCircle />, path: "/attainment-review", roles: ["HOD"] },
-  { text: "Question Bank", icon: <FiFileText />, path: "/question-bank", roles: ["HOD"] },
-  { text: "Reports", icon: <FiBarChart2 />, path: "/reports", roles: ["HOD", "FACULTY", "ADMIN"] },
-  { text: "Settings", icon: <FiSettings />, path: "/settings", roles: ["HOD", "FACULTY", "ADMIN"] },
+  {
+    text: "Dashboard",
+    icon: <FiGrid />,
+    path: "/dashboard",
+    roles: ["HOD", "FACULTY", "ADMIN"],
+  },
+  {
+    text: "Course Management",
+    icon: <FiBook />,
+    path: "hod/courses",
+    roles: ["HOD", "ADMIN"],
+  },
+  {
+    text: "CLO Management",
+    icon: <FiList />,
+    path: "hod/clos",
+    roles: ["HOD", "FACULTY"],
+  },
+  {
+    text: "PO/PSO Management",
+    icon: <FiClipboard />,
+    path: "/pos",
+    roles: ["HOD", "ADMIN"],
+  },
+  {
+    text: "Mapping Matrix",
+    icon: <FiMap />,
+    path: "/mapping",
+    roles: ["HOD", "FACULTY"],
+  },
+  {
+    text: "Faculty Assignment",
+    icon: <FiClipboard />,
+    path: "/faculty-assignment",
+    roles: ["HOD"],
+  },
+  {
+    text: "Attainment Review",
+    icon: <FiCheckCircle />,
+    path: "/attainment-review",
+    roles: ["HOD"],
+  },
+  {
+    text: "Question Bank",
+    icon: <FiFileText />,
+    path: "/question-bank",
+    roles: ["HOD"],
+  },
+  {
+    text: "Reports",
+    icon: <FiBarChart2 />,
+    path: "/reports",
+    roles: ["HOD", "FACULTY", "ADMIN"],
+  },
+  {
+    text: "Settings",
+    icon: <FiSettings />,
+    path: "/settings",
+    roles: ["HOD", "FACULTY", "ADMIN"],
+  },
 ];
 
 const Layout = ({ children }) => {
@@ -48,11 +99,8 @@ const Layout = ({ children }) => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-
       {/* SIDEBAR (desktop) */}
-      <aside
-        className="hidden md:flex flex-col w-60 bg-white shadow-lg fixed h-full"
-      >
+      <aside className="hidden md:flex flex-col w-60 bg-white shadow-lg fixed h-full">
         <div className="p-5 border-b text-xl font-bold">OBE System</div>
 
         <ul className="mt-2">
@@ -61,7 +109,11 @@ const Layout = ({ children }) => {
               key={item.text}
               onClick={() => navigate(item.path)}
               className={`flex items-center px-5 py-3 cursor-pointer hover:bg-blue-100
-              ${location.pathname === item.path ? "bg-blue-200 font-semibold" : ""}
+              ${
+                location.pathname === item.path
+                  ? "bg-blue-200 font-semibold"
+                  : ""
+              }
             `}
             >
               <span className="mr-3 text-lg">{item.icon}</span>
@@ -73,7 +125,8 @@ const Layout = ({ children }) => {
 
       {/* MOBILE SIDEBAR */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-30 bg-black bg-opacity-40 md:hidden"
+        <div
+          className="fixed inset-0 z-30 bg-black bg-opacity-40 md:hidden"
           onClick={() => setSidebarOpen(false)}
         ></div>
       )}
@@ -94,7 +147,11 @@ const Layout = ({ children }) => {
                 setSidebarOpen(false);
               }}
               className={`flex items-center px-5 py-3 cursor-pointer hover:bg-blue-100
-              ${location.pathname === item.path ? "bg-blue-200 font-semibold" : ""}
+              ${
+                location.pathname === item.path
+                  ? "bg-blue-200 font-semibold"
+                  : ""
+              }
             `}
             >
               <span className="mr-3 text-lg">{item.icon}</span>
@@ -105,11 +162,8 @@ const Layout = ({ children }) => {
       </aside>
 
       {/* TOP NAVBAR */}
-      <header
-        className="fixed md:ml-60 w-full md:w-[calc(100%-240px)] bg-white shadow-sm z-20"
-      >
+      <header className="fixed md:ml-60 w-full md:w-[calc(100%-240px)] bg-white shadow-sm z-20">
         <div className="flex items-center justify-between px-4 py-3">
-
           {/* Mobile Sidebar Button */}
           <button
             className="md:hidden text-2xl"
@@ -153,7 +207,7 @@ const Layout = ({ children }) => {
 
       {/* PAGE CONTENT */}
       <main className="flex-1 md:ml-60 mt-16 p-6">
-        {children}
+        <Outlet />
       </main>
     </div>
   );
